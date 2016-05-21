@@ -1,0 +1,147 @@
+<?xml version="1.0"?>
+<config>
+	<tabs>
+        <ditab translate="label" module="submitbestoffer">
+            <label>JTECH Extensions</label>
+            <sort_order>200</sort_order>
+        </ditab>
+    </tabs>
+   <sections>
+        <submitbestoffer translate="label" module="submitbestoffer">
+			<label>Submit Best Offer</label>
+            <tab>ditab</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>40</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <basic_settings translate="label">
+                    <label>Basic Settings </label>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <active translate="label">
+                            <label>Enabled on Frontend</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </active>
+						<number_of_allowed_offers translate="label">
+							<label>Number of offers a customer can place for each product</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+						</number_of_allowed_offers>
+						<limit_reached_message translate="label">
+							<label>Offer limit reached message.</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+							<comment>Example: You already reached the limit for placing an offer.</comment>
+						</limit_reached_message>
+						<approved_offer_message translate="label">
+							<label>Approved offer message</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+							<comment>Example: Your Offer for (APPROVED_OFFER_PRICE) has been accepted. The items have been added to your cart for checkout. Here APPROVED_OFFER_PRICE will be replaced by approved offer price (For example $10.25 or etc.)</comment>
+						</approved_offer_message>
+						<automate_difference translate="label">
+							<label>Difference need to ignore in automate process</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+							<comment>Example: "0.01" So if approved price is $150 then $150.01 or 149.99 will also be approved. If $140 is the declined price then $140.01 or $139.99 will also declined the offer.</comment>
+						</automate_difference>
+						<offer_expiration_time>
+							<label>Offer expiration time in seconds.</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+							<comment>Ex: 3600 for 1 hour. 1800 for 30 minutes.</comment>
+						</offer_expiration_time>
+                    </fields>
+                </basic_settings>
+				<email translate="label">
+					<label>Email Settings</label>
+                    <sort_order>20</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>						
+						<pending translate="label">
+                            <label>Offer Pending Email Template</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_template</source_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </pending>
+						<approved translate="label">
+                            <label>Offer Approved Email Template</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_template</source_model>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </approved>
+						<declined translate="label">
+                            <label>Offer Declined Email Template</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_template</source_model>
+                            <sort_order>70</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </declined>
+						<offer_receivers translate="label">
+							<label>Offer receivers</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>80</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+							<comment>Ex: Specify email address of offer receiver, who will get an email while someone submit an offer on site. Multiple email address can be entered separated by comma (,).</comment>
+						</offer_receivers>
+						<offer_sender  translate="label">
+							<label>Offer sender</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>90</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+							<comment>Ex: Specify email address which will be used as sender of email address.</comment>
+						</offer_sender>
+						<offer_sendername  translate="label">
+							<label>Offer sender name</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+							<comment>Ex: Specify name which will be used as email sender name.</comment>
+						</offer_sendername>
+					</fields>
+				</email>
+            </groups>
+        </submitbestoffer>
+    </sections>
+</config>

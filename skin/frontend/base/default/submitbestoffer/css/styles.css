@@ -1,0 +1,22 @@
+.tez_submitbestoffer_form{display:block; float:left; width:100%; padding:10px 0;}
+.tez_submitbestoffer_form .head{display:block; float:left; width:100%; font-weight:bold;}
+.tez_submitbestoffer_form .container{display:block; float:left; width:100%;}
+.tez_submitbestoffer_form .container .textbox_container{float:left; width:60%;}
+.tez_submitbestoffer_form .container .textbox_container .input-text{float:left; width:90%;}
+.tez_submitbestoffer_form .container .textbox_container .tez_submitbestoffer_form_success_message{color:red; font-weight:bold;}
+.tez_submitbestoffer_form .container .textbox_container .tez_submitbestoffer_form_failure_message{color:red; font-weight:bold; float:left;}
+.tez_submitbestoffer_form .container .submit_button{float:left; width:35%;}
+
+.tez_submitbestoffer_list{float: left; width: 100%;}
+.tez_submitbestoffer_list .head{float: left; width: 100%; text-align:center; font-weight:bold;}
+.tez_submitbestoffer_list .list{float: left; width: 100%; text-align:left; font-weight:bold;}
+.tez_submitbestoffer_list .list ul li{position:relative; list-style:none;}
+.tez_submitbestoffer_list .list table{width:100%;}
+.tez_submitbestoffer_list .list table th{font-weight:bold; text-align:center;}
+.tez_submitbestoffer_list .list table td{text-align:center;}
+.tez_submitbestoffer_list .list table td span.approved{color:#00FF00; text-transform:capitalize; font-weight:bold;}
+.tez_submitbestoffer_list .list table td span.declined{color:red; text-transform:capitalize; font-weight:bold;}
+.tez_submitbestoffer_list .list table td span.pending{color:orange; text-transform:capitalize; font-weight:bold;}
+.approved_offer_message{color:green; text-transform:capitalize; font-weight:bold;}
+
+#approvedoffermessage_container_close_button{text-decoration: underline; font-size: 10px; font-weight: bold; position: absolute; right: 0pt; margin-right: 10px; margin-top: -30px; cursor:pointer;}

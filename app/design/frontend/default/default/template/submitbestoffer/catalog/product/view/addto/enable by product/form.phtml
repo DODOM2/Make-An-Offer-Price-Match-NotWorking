@@ -1,0 +1,163 @@
+<?php
+	if(!$this->isExtensionEnabled()){
+		return false;
+	}
+	$_product = $this->getProduct(); 
+?>
+
+<?php if($this->showSubmitOfferForm($_product) && $_product->getData('allow_best_offer')): ?>
+<div class="tez_submitbestoffer_form" id="tez_submitbestoffer_form">
+	<div class="head"><?php echo $this->__("Submit Your Best Offer") ?></div>
+	<div class="container" id="tez_submitbestoffer_form">
+		<div class="textbox_container">
+			<input type="text" name="best_offer_price" id="best_offer_price" class="required input-text" />
+			<div id="tez_submitbestoffer_form_message" style="display:none;"></div>
+		</div>
+		<div class="submit_button">
+			<button onclick="javascript:sendBestOfferPrice()" class="button" title="<?php echo $this->__("Submit Offer") ?>" type="button"><span><span><?php echo $this->__("Submit Offer") ?></span></span></button>
+		</div>
+	</div>
+</div>
+<?php endif; ?>
+
+<?php if($this->getCustomerId()): ?>
+	<div id="tez_submitbestoffer_list_container">
+		<?php echo $this->getLayout()->createBlock('submitbestoffer/form')->setTemplate('submitbestoffer/catalog/product/view/addto/offers_list.phtml')->toHtml()?>
+	</div>
+<?php endif; ?>
+
+<script type="text/javascript">
+	function sendBestOfferPrice(){
+		best_offer_price_field_id = 'best_offer_price';
+		
+		if(!submitBestOfferPriceValidation($(best_offer_price_field_id).value)){
+			$('tez_submitbestoffer_form_message').innerHTML = '<?php echo $this->__('Enter valid price please.'); ?>';
+			$('tez_submitbestoffer_form_message').className = 'tez_submitbestoffer_form_failure_message';
+			$('tez_submitbestoffer_form_message').show();
+			return false;
+		}
+
+		
+		url = '<?php echo $this->getUrl('submitbestoffer/index/sendbestofferprice') ?>';
+		<?php if($_product->getTypeId() == "configurable") { ?>
+		var ddSelection = '';
+		var ddAttrID = '';
+		var optionData = '';
+		var canContinue = false;
+		$$("#product-options-wrapper>dl>dt").each( function (dt){ 
+				
+        	if(dt.next('dd').select('select :selected').length > 0){
+			    if(dt.next('dd').select('select :selected').first().value) {
+					ddSelection = dt.next('dd').select('select :selected').first().value;
+					ddAttrID = dt.next('dd').select('select').first().readAttribute("name");
+					//alert(dt.next('dd').select('select :selected').first().value);
+					//alert(dt.next('dd').select('select').first().readAttribute("name"));
+					optionData += '&'+ddAttrID+'='+ddSelection;
+					canContinue = false;
+				} else {
+					alert('Please Select an Option');
+					canContinue = true;
+				}
+			}
+			
+		});
+		params = 'offered_price='+$(best_offer_price_field_id).value+'&product_id=<?php echo $_product->getId(); ?>'+optionData+'&qty='+$('qty').value;
+		
+		<?php } else { ?>
+		params = 'offered_price='+$(best_offer_price_field_id).value+'&product_id=<?php echo $_product->getId(); ?>&qty='+$('qty').value;
+		<?php } ?>
+		
+		if(canContinue) {
+			return false;
+		}
+		
+		$('tez_submitbestoffer_form_message').innerHTML = '<?php echo $this->__('Processing...') ?>';
+		$('tez_submitbestoffer_form_message').className = 'tez_submitbestoffer_form_success_message';
+		$('tez_submitbestoffer_form_message').show();
+		new Ajax.Request(url, {
+			onSuccess: function(transport) {
+				
+				var json = transport.responseText.evalJSON();
+				$('tez_submitbestoffer_form_message').innerHTML = json.message;
+				if(json.offers_list)
+					$('tez_submitbestoffer_list_container').innerHTML = json.offers_list;
+				if(json.hide_form){
+					$('tez_submitbestoffer_form').innerHTML = '';
+					addPriceMessage();
+					if(json.top_cart_link){
+						var aS = document.getElementsByTagName('a');
+						for (var i = 0; i < aS.length; i++) {
+							var a = aS[i];
+							if(a.className=="top-link-cart"){
+								a.innerHTML = json.top_cart_link;
+								a.title = json.top_cart_link;
+							}
+						}
+					}
+					if(json.sidebar_cart){
+						var divs = document.getElementsByTagName('div');
+						for (var i = 0; i < divs.length; i++) {
+							var div = divs[i];
+							if(div.className=="block block-cart"){		
+								div.innerHTML = json.sidebar_cart;
+								break;
+							}
+						}
+					}
+				}
+				if(json.success){
+					$('tez_submitbestoffer_form_message').className = 'tez_submitbestoffer_form_success_message';
+					$('best_offer_price').value = "";
+				}else{
+					$('tez_submitbestoffer_form_message').className = 'tez_submitbestoffer_form_failure_message';
+				}
+				$('tez_submitbestoffer_form_message').show();
+			}, method: "post", parameters:params
+		});
+	}
+	
+	function submitBestOfferPriceValidation(value){
+		if(value=="") return false;
+		
+		if(!/\D/.test(value)) return true;//IF NUMBER
+		else if(/^\d+\.\d+$/.test(value)) return true;//IF A DECIMAL NUMBER HAVING AN INTEGER ON EITHER SIDE OF THE DOT(.)
+		else return false;
+	}
+	
+	function addPriceMessage(){
+		product_id = '<?php echo $_product->getId() ?>';
+		price_span_element_id = '<?php echo 'product-price-' ?>'+product_id;
+		priceSpanElement = $(price_span_element_id);
+		url = '<?php echo $this->getUrl('submitbestoffer/index/getapprovedoffermessage') ?>';
+		params = 'product_id='+product_id;
+		new Ajax.Request(url, {
+			onSuccess: function(transport) {
+				var json = transport.responseText.evalJSON();
+				if(json.success){
+					$('approvedoffermessage_container_message').innerHTML = json.message;					
+					submitOfferPlaceElementInCenter('approvedoffermessage_container');
+					$('approvedoffermessage_container_bg').show();
+					$('approvedoffermessage_container').show();
+				}
+			}, method: "post", parameters:params
+		});
+	}
+	// addPriceMessage();
+	
+	function hideMessageBox(){
+		$('approvedoffermessage_container_bg').hide();
+		$('approvedoffermessage_container').hide();
+	}
+	
+	function submitOfferPlaceElementInCenter(elementId){
+		element = $(elementId);
+		// var dimensions = element.getDimensions();
+		width = element.getWidth();
+		margin_left = 0;
+		if(width>0){
+			margin_left = parseInt(width) / parseInt(2);
+		}
+		element.style.marginLeft = -margin_left+"px";
+		element.style.left = '50%';
+	}
+</script>

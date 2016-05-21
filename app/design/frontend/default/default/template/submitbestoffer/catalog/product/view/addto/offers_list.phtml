@@ -1,0 +1,104 @@
+<?php
+if(!$this->isExtensionEnabled()){
+	return false;
+}
+?>
+<?php if($this->getCustomerId()): ?>
+<?php 
+	$_product = $this->getProduct(); 
+	if(!$_product){
+		$_product = $this->getData('product'); 
+	}
+?>
+	<div class="tez_submitbestoffer_list">
+		<div class="head"><?php echo $this->__('Your placed offer\'s') ?></div>
+		<div class="list">
+			<table>
+				<tr>
+					<th><?php echo ""; ?></th>
+					<th><?php echo $this->__("Your Offer") ; ?></th>
+					<th><?php echo $this->__("Status") ; ?></th>
+				</tr>
+				<?php $placedOffers = $this->getPlacedOffers($_product->getId()); ?>
+				<?php if($placedOffers->count()): ?>
+					<?php $i = 1; ?>
+					<?php foreach($placedOffers as $placedOffer): ?>
+						<tr>
+							<td><?php echo $i; ?></td>
+							<td><?php echo $this->getFormatedPrice($placedOffer->getOfferedPrice()); ?></td>
+							<td>
+								<?php 
+									echo "<span class='".$placedOffer->getStatus()."'>".$placedOffer->getStatus()."</span>"; 
+								?>
+							</td>
+						</tr>
+						<?php $i++; ?>
+					<?php endforeach; ?>
+				<?php else: ?>
+					<tr>
+						<th colspan="3" align="center"><?php echo $this->__("No offers placed."); ?></th>
+					</tr>
+				<?php endif; ?>
+			</table>
+		</div>
+	</div>
+<?php endif; ?>
+<script type="text/javascript">
+	function sendBestOfferPrice(){
+		best_offer_price_field_id = 'best_offer_price';
+		
+		if(!submitBestOfferPriceValidation($(best_offer_price_field_id).value)){
+			// alert('enter numeric please');
+			$('tez_submitbestoffer_form_message').innerHTML = '<?php echo $this->__('Enter valid price please.'); ?>';
+			$('tez_submitbestoffer_form_message').className = 'tez_submitbestoffer_form_failure_message';
+			$('tez_submitbestoffer_form_message').show();
+			return false;
+		}
+	
+		url = '<?php echo $this->getUrl('submitbestoffer/index/sendbestofferprice') ?>';
+		params = 'offered_price='+$(best_offer_price_field_id).value+'&product_id=<?php echo $_product->getId(); ?>';
+		$('tez_submitbestoffer_form_message').innerHTML = '<?php echo $this->__('Processing...') ?>';
+		$('tez_submitbestoffer_form_message').className = 'tez_submitbestoffer_form_success_message';
+		$('tez_submitbestoffer_form_message').show();
+		new Ajax.Request(url, {
+			onSuccess: function(transport) {
+				var json = transport.responseText.evalJSON();
+				$('tez_submitbestoffer_form_message').innerHTML = json.message;
+				if(json.success){
+					$('tez_submitbestoffer_form_message').className = 'tez_submitbestoffer_form_success_message';
+				}else{
+					$('tez_submitbestoffer_form_message').className = 'tez_submitbestoffer_form_failure_message';
+				}
+				$('tez_submitbestoffer_form_message').show();
+			}, method: "post", parameters:params
+		});
+	}
+	
+	function submitBestOfferPriceValidation(value){
+		if(value=="") return false;
+		
+		if(!/\D/.test(value)) return true;//IF NUMBER
+		else if(/^\d+\.\d+$/.test(value)) return true;//IF A DECIMAL NUMBER HAVING AN INTEGER ON EITHER SIDE OF THE DOT(.)
+		else return false;
+	}
+	
+	function addBestOfferProductToCart(){
+		url = '<?php echo $this->getUrl('submitbestoffer/index/addbestofferproducttocart') ?>';
+		params = 'offered_price='+$(best_offer_price_field_id).value+'&product_id=<?php echo $_product->getId(); ?>';
+		$('tez_submitbestoffer_form_message').innerHTML = '<?php echo $this->__('Processing...') ?>';
+		$('tez_submitbestoffer_form_message').className = 'tez_submitbestoffer_form_success_message';
+		$('tez_submitbestoffer_form_message').show();
+		new Ajax.Request(url, {
+			onSuccess: function(transport) {
+				var json = transport.responseText.evalJSON();
+				$('tez_submitbestoffer_form_message').innerHTML = json.message;
+				if(json.success){
+					$('tez_submitbestoffer_form_message').className = 'tez_submitbestoffer_form_success_message';
+				}else{
+					$('tez_submitbestoffer_form_message').className = 'tez_submitbestoffer_form_failure_message';
+				}
+				$('tez_submitbestoffer_form_message').show();
+			}, method: "post", parameters:params
+		});
+	}
+</script>

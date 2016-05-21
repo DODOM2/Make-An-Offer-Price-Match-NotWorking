@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<config>
+    <menu>
+         <di_submitbestoffer translate="title" module="submitbestoffer">
+			<title>Best Offers</title>
+			<sort_order>1000</sort_order>
+            <children>
+                <submitbestoffer translate="title" module="submitbestoffer">
+                    <title>Submit Best Offer</title>
+                    <action>adminhtml/submitbestoffer</action>
+                    <sort_order>50</sort_order>
+                </submitbestoffer>
+            </children>
+         </di_submitbestoffer>
+    </menu>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <di_submitbestoffer translate="title" module="submitbestoffer">
+						<title>Best Offers</title>
+                        <sort_order>1000</sort_order>
+                        <children>
+                            <submitbestoffer translate="title">
+                                <title>Submit Best Offer</title>
+                                <sort_order>50</sort_order>
+                            </submitbestoffer>                            
+                        </children>
+                    </di_submitbestoffer>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <submitbestoffer translate="title">
+										<title>Submit Best Offer</title>
+										<sort_order>50</sort_order>
+									</submitbestoffer>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>

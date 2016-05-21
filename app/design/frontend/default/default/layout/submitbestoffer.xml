@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+	
+	<default></default>
+	
+	<catalog_product_view>
+		<reference name="head">
+			<action method="addCss"><stylesheet>submitbestoffer/css/styles.css</stylesheet></action>
+		</reference>
+		<reference name="product.info.addto">
+			<action ifconfig="submitbestoffer/basic_settings/active" method="setTemplate"><template>submitbestoffer/catalog/product/view/addto.phtml</template></action>
+			<block type="submitbestoffer/form" name="submitbestoffer.form" template="submitbestoffer/catalog/product/view/addto/form.phtml" />
+		</reference>
+		<reference name="before_body_end">
+			<block type="core/template" name="submitbestoffer.message_container" template="submitbestoffer/catalog/product/view/addto/message_container.phtml" />
+		</reference>
+	</catalog_product_view>
+
+</layout>
